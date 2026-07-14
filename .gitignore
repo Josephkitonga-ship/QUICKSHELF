@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Local databases and runtime engine data
+*.db
+*.db-journal
+*.db-wal
+pb_data/
+.env
+.env.local
+.env.*.local
+
+# IDEs and OS files
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

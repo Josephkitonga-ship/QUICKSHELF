@@ -1,0 +1,12 @@
+{
+  "name": "quickshelf-workspace",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:gateway": "bun --filter api-gateway dev",
+    "dev:storefront": "bun --filter tenant-storefront dev"
+  }
+}
