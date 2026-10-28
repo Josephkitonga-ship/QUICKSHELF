@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { CategoryPillBar } from '@/components/CategoryPillBar'
 import { ProductCard } from '@/components/ProductCard'
 import { categories } from '@/lib/data'
 import { listProducts } from '@/lib/db'
@@ -7,9 +8,12 @@ export const dynamic = 'force-dynamic'
 type SP = { q?: string; category?: string; sort?: string; deals?: string }
 export default async function Products({ searchParams }: { searchParams: SP }) {
   const list = await listProducts({ q: searchParams.q, category: searchParams.category, sort: searchParams.sort, deals: Boolean(searchParams.deals) })
+  const pills = [{ label: 'All products', href: '/products' }, { label: 'Deals', href: '/products?deals=1' }, ...categories.map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` }))]
+  const active = searchParams.category ? `/products?category=${encodeURIComponent(searchParams.category)}` : searchParams.deals ? '/products?deals=1' : '/products'
   return (
     <>
       <h1>All products</h1>
+      <div className="mt-3"><CategoryPillBar items={pills} active={active} /></div>
       <form className="filters" action="/products" style={{ marginTop: 12 }}>
         <label className="sr" htmlFor="fq">Search</label><input id="fq" name="q" defaultValue={searchParams.q} placeholder="Search" />
         <label className="sr" htmlFor="fc">Category</label>

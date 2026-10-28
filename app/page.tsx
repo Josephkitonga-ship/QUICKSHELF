@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { CategoryPillBar } from '@/components/CategoryPillBar'
 import { Deck, Slide } from '@/components/Deck'
 import { ProductCard } from '@/components/ProductCard'
 import { categories } from '@/lib/data'
@@ -7,6 +8,7 @@ export const dynamic = 'force-dynamic'
 function Head({ t, href }: { t: string; href: string }) { return <div className="sec"><h2>{t}</h2><Link href={href}>See all</Link></div> }
 export default async function Home() {
   const [products, shops, ad] = await Promise.all([listProducts(), listShops(), getAd()])
+  const pills = [{ label: 'Deals', href: '/products?deals=1' }, { label: 'New arrivals', href: '/products?sort=new' }, ...categories.slice(0, 6).map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` })), { label: 'All shops', href: '/shops' }]
   const slides: Slide[] = [
     ...(ad ? [{ tag: 'Sponsored', title: ad.headline, text: ad.line, href: `/shop/${ad.shop}`, cta: 'Visit shop' }] : []),
     { title: 'Open your shop on QuickShelf', text: 'One product list for your shop, Jumia and Kilimall.', href: '/sell', cta: 'Learn more' },
@@ -15,11 +17,7 @@ export default async function Home() {
   ]
   return (
     <>
-      <div className="rail" aria-label="Quick links">
-        {['Deals', 'New arrivals'].map((t, i) => <Link key={t} className="chip" href={i ? '/products?sort=new' : '/products?deals=1'}>{t}</Link>)}
-        {categories.slice(0, 6).map((c) => <Link key={c} className="chip" href={`/products?category=${encodeURIComponent(c)}`}>{c}</Link>)}
-        <Link className="chip" href="/shops">All shops</Link>
-      </div>
+      <CategoryPillBar items={pills} />
       <Deck slides={slides} />
       <div className="sec"><h2>Shop by category</h2></div>
       <ul className="cats">{categories.map((c) => <li key={c}><Link href={`/products?category=${encodeURIComponent(c)}`}><span aria-hidden>{c[0]}</span>{c}</Link></li>)}</ul>
