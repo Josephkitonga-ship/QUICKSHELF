@@ -1,4 +1,5 @@
 'use client'
+import { MotionConfig } from 'framer-motion'
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import type { Line } from '@/lib/cart'
 type Store = { cart: Line[]; saved: string[]; ready: boolean; add: (s: string, q?: number) => void; setQty: (s: string, q: number) => void; remove: (s: string) => void; clear: () => void; toggleSave: (s: string) => void }
@@ -16,6 +17,6 @@ export function Providers({ children }: { children: ReactNode }) {
     clear: () => setCart([]),
     toggleSave: (s) => setSaved((v) => (v.includes(s) ? v.filter((x) => x !== s) : [...v, s])),
   }
-  return <Ctx.Provider value={store}>{children}{toast && <div className="toast" role="status">{toast}</div>}</Ctx.Provider>
+  return <Ctx.Provider value={store}><MotionConfig reducedMotion="user">{children}</MotionConfig>{toast && <div className="toast" role="status">{toast}</div>}</Ctx.Provider>
 }
 export const useStore = () => { const c = useContext(Ctx); if (!c) throw new Error('Providers missing'); return c }
