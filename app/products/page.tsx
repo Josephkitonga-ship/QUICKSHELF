@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 import { ProductCard } from '@/components/ProductCard'
-import { categories, getShop, products } from '@/lib/data'
+import { categories } from '@/lib/data'
+import { listProducts } from '@/lib/db'
 export const metadata: Metadata = { title: 'All products' }
+export const dynamic = 'force-dynamic'
 type SP = { q?: string; category?: string; sort?: string; deals?: string }
-export default function Products({ searchParams }: { searchParams: SP }) {
-  const q = (searchParams.q ?? '').toLowerCase().trim()
-  let list = products.filter((p) => (!q || p.name.toLowerCase().includes(q) || getShop(p.shop)!.name.toLowerCase().includes(q)) && (!searchParams.category || p.category === searchParams.category) && (!searchParams.deals || p.badge === 'Offer'))
-  if (searchParams.sort === 'low') list = [...list].sort((a, b) => a.price - b.price)
-  if (searchParams.sort === 'high') list = [...list].sort((a, b) => b.price - a.price)
-  if (searchParams.sort === 'new') list = [...list].sort((a, b) => Number(b.badge === 'New') - Number(a.badge === 'New'))
+export default async function Products({ searchParams }: { searchParams: SP }) {
+  const list = await listProducts({ q: searchParams.q, category: searchParams.category, sort: searchParams.sort, deals: Boolean(searchParams.deals) })
   return (
     <>
       <h1>All products</h1>

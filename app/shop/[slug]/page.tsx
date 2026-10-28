@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
 import { ProductCard } from '@/components/ProductCard'
-import { getShop, products } from '@/lib/data'
+import { getShop, listProducts } from '@/lib/db'
+export const dynamic = 'force-dynamic'
 import { waLink } from '@/lib/whatsapp'
-export default function ShopPage({ params }: { params: { slug: string } }) {
-  const shop = getShop(params.slug); if (!shop) notFound()
-  const list = products.filter((p) => p.shop === shop.slug)
+export default async function ShopPage({ params }: { params: { slug: string } }) {
+  const shop = await getShop(params.slug); if (!shop) notFound()
+  const list = await listProducts({ shop: shop.slug })
   return (
     <>
       <div className="row2" style={{ alignItems: 'center', marginBottom: 16 }}>

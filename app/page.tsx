@@ -1,9 +1,18 @@
 import Link from 'next/link'
+import { Deck, Slide } from '@/components/Deck'
 import { ProductCard } from '@/components/ProductCard'
-import { ads, categories, products, shops } from '@/lib/data'
+import { categories } from '@/lib/data'
+import { getAd, listProducts, listShops } from '@/lib/db'
+export const dynamic = 'force-dynamic'
 function Head({ t, href }: { t: string; href: string }) { return <div className="sec"><h2>{t}</h2><Link href={href}>See all</Link></div> }
-export default function Home() {
-  const ad = ads[0]
+export default async function Home() {
+  const [products, shops, ad] = await Promise.all([listProducts(), listShops(), getAd()])
+  const slides: Slide[] = [
+    ...(ad ? [{ tag: 'Sponsored', title: ad.headline, text: ad.line, href: `/shop/${ad.shop}`, cta: 'Visit shop' }] : []),
+    { title: 'Open your shop on QuickShelf', text: 'One product list for your shop, Jumia and Kilimall.', href: '/sell', cta: 'Learn more' },
+    { title: 'One cart, any shop', text: 'Check out once. Chat with each shop on WhatsApp to pay.', href: '/products', cta: 'Start shopping' },
+    { title: 'This week’s deals', text: 'Offers from approved shops across Kenya.', href: '/products?deals=1', cta: 'See deals' },
+  ]
   return (
     <>
       <div className="rail" aria-label="Quick links">
@@ -11,10 +20,7 @@ export default function Home() {
         {categories.slice(0, 6).map((c) => <Link key={c} className="chip" href={`/products?category=${encodeURIComponent(c)}`}>{c}</Link>)}
         <Link className="chip" href="/shops">All shops</Link>
       </div>
-      <section className="banners" aria-label="Promotions">
-        <div className="banner tinted"><span className="tag warn">Sponsored</span><h2>{ad.headline}</h2><p className="mu">{ad.line}</p><Link className="btn" href={`/shop/${ad.shop}`}>Visit shop</Link></div>
-        <div className="banner"><h2>Open your shop on QuickShelf</h2><p className="mu">One product list for your shop, Jumia and Kilimall.</p><Link className="btn out" href="/sell">Learn more</Link></div>
-      </section>
+      <Deck slides={slides} />
       <div className="sec"><h2>Shop by category</h2></div>
       <ul className="cats">{categories.map((c) => <li key={c}><Link href={`/products?category=${encodeURIComponent(c)}`}><span aria-hidden>{c[0]}</span>{c}</Link></li>)}</ul>
       <ul className="trust">
@@ -24,7 +30,7 @@ export default function Home() {
       <Head t="Popular this week" href="/products" />
       <div className="grid">{products.slice(0, 8).map((p) => <ProductCard key={p.slug} p={p} />)}</div>
       <Head t="Featured shops" href="/shops" />
-      <ul className="list two">{shops.map((s) => <li key={s.slug}><Link className="shop" href={`/shop/${s.slug}`}><span className="avatar">{s.name[0]}</span><span><b>{s.name}</b><br /><span className="mu">{s.town} · {products.filter((p) => p.shop === s.slug).length} products</span></span></Link></li>)}</ul>
+      <ul className="list two">{shops.map((s) => <li key={s.slug}><Link className="shop" href={`/shop/${s.slug}`}><span className="avatar">{s.name[0]}</span><span><b>{s.name}</b><br /><span className="mu">{s.town} · {s.count} products</span></span></Link></li>)}</ul>
       <Head t="New arrivals" href="/products?sort=new" />
       <div className="grid">{products.filter((p) => p.badge === 'New').map((p) => <ProductCard key={p.slug} p={p} />)}</div>
       <div className="banner tinted" style={{ marginTop: 32 }}><h2>Sell on QuickShelf</h2><p className="mu">Post your products once and share one link. Orders arrive on your WhatsApp.</p><Link className="btn" href="/apply">Apply to open your shop</Link></div>

@@ -1,10 +1,14 @@
 'use client'
+import { Skeleton } from '@/components/Skeleton'
 import Link from 'next/link'
 import { useStore } from '@/components/Providers'
 import { groupCart } from '@/lib/cart'
+import { useCatalog } from '@/lib/useCatalog'
 import { kes } from '@/lib/format'
 export default function Cart() {
-  const { cart, setQty, remove } = useStore(); const groups = groupCart(cart)
+  const { cart, setQty, remove, ready } = useStore(); const data = useCatalog(cart.map((l) => l.slug), ready)
+  if (!ready || !data) return <Skeleton />
+  const groups = groupCart(cart, data.products, data.shops)
   if (!groups.length) return <><h1>Your cart</h1><p style={{ margin: '12px 0' }}>Your cart is empty.</p><Link className="btn" href="/products">Browse products</Link></>
   return (
     <div style={{ maxWidth: 720 }}>

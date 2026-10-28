@@ -1,6 +1,6 @@
 // Sample data. Replace with Supabase queries when the backend is connected.
 export type Shop = { slug: string; name: string; town: string; category: string; whatsapp: string; pickup: boolean; areas: { name: string; fee: number }[] }
-export type Product = { slug: string; name: string; price: number; shop: string; category: string; badge?: 'New' | 'Offer'; stock: number; description: string }
+export type Product = { slug: string; name: string; price: number; shop: string; shopName: string; town: string; shopWhatsapp: string; category: string; badge?: 'New' | 'Offer'; stock: number; description: string }
 
 export const categories = ['Phones & Tablets', 'Electronics', 'Fashion', 'Home & Kitchen', 'Beauty & Care', 'Groceries', 'Baby & Kids', 'Sports & Outdoors', 'Automotive', 'Services', 'Building', 'Water & Drinks']
 
@@ -12,7 +12,7 @@ export const shops: Shop[] = [
   { slug: 'achieng-home', name: 'Achieng Home', town: 'Mombasa', category: 'Home & Kitchen', whatsapp: '254700000005', pickup: true, areas: [{ name: 'Mombasa island', fee: 150 }] },
 ]
 
-const p = (slug: string, name: string, price: number, shop: string, category: string, stock: number, badge?: 'New' | 'Offer'): Product => ({ slug, name, price, shop, category, stock, badge, description: 'Sample description. Replace with the shop’s own text.' })
+const p = (slug: string, name: string, price: number, shop: string, category: string, stock: number, badge?: 'New' | 'Offer'): Product => { const s = shops.find((x) => x.slug === shop)!; return { slug, name, price, shop, shopName: s.name, town: s.town, shopWhatsapp: s.whatsapp, category, stock, badge, description: 'Sample description. Replace with the shop’s own text.' } }
 export const products: Product[] = [
   p('maize-flour-2kg', 'Maize flour 2 kg', 150, 'mama-njeri', 'Groceries', 24, 'Offer'),
   p('cooking-oil-1l', 'Cooking oil 1 L', 280, 'mama-njeri', 'Groceries', 2),

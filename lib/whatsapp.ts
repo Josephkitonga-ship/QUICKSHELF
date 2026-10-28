@@ -2,7 +2,7 @@ import { kes } from './format'
 export type Order = {
   ref: string; cart: string; shop: string; shopName: string; whatsapp: string; name: string
   lines: { name: string; qty: number; price: number }[]
-  delivery: { type: 'pickup' | 'delivery'; area?: string; fee: number }; total: number
+  delivery: { type: 'pickup' | 'delivery'; area?: string; fee: number }; total: number; status?: string
 }
 export function orderMessage(o: Order, origin: string) {
   const shown = o.lines.slice(0, 6).map((l, i) => `${i + 1}. ${l.name} × ${l.qty}: ${kes(l.price * l.qty)}`)
