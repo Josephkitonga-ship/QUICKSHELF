@@ -14,7 +14,8 @@ Run these in the Supabase SQL editor, in order:
 1. `supabase/migrations/0001_schema.sql` (tables, plan limits)
 2. `supabase/migrations/0002_security.sql` (row-level security and permissions)
 3. `supabase/migrations/0003_functions.sql` (checkout and stock functions)
-4. `supabase/seed.sql` (demo shops and products, optional, never in production)
+4. `supabase/migrations/0004_wholesale.sql` (wholesale refills between vendors)
+5. `supabase/seed.sql` (demo vendors and products, optional, never in production)
 
 ## 3. Turn on the stock timer
 Enable the **pg_cron** extension (Database > Extensions), then run:
@@ -35,6 +36,7 @@ Sign up a user in Supabase Auth, then run (with that user's id):
 | `POST /api/checkout` | `place_order()`: prices, stock and fees decided in the database, one order per shop, stock held 3 hours |
 | `GET /api/orders/[cart]` | `get_cart_orders()`: tracking by the long random cart reference |
 | `POST /api/apply` | inserts into `applications` (owner reviews them) |
+| `/wholesale` (sample data for now) | `wholesale_terms` and `create_refill_request()`: prices readable only by approved vendors on a plan that allows it |
 | Merchant "Mark as paid" (dashboard, not built) | `mark_paid()`, `mark_delivered()`, `cancel_order()`, `revive_order()` |
 
 ## Test before going live
@@ -49,6 +51,9 @@ Sign up a user in Supabase Auth, then run (with that user's id):
 - Platform-owner screens (approve applications, confirm plan payments, approve ads).
 - Photos (Cloudinary).
 - Abuse protection on checkout (rate limiting, bot check) and merchant alerts (push, SMS or email).
-- Jumia and Kilimall sync (`channel_listings` is a placeholder table).
+- Wholesale screens that use the database (the catalog page uses sample data until vendor login exists).
+- Vendor and supplier dashboards.
 - Real terms and privacy text, and registration as a data controller.
 - The SQL has not been run against a database yet. Run it on a new Supabase project first and fix any errors.
+
+Tiers: Starter KSh 800 (25 products), Growth KSh 1,500 (50, can buy wholesale), Top tier KSh 2,000 (100, can also supply wholesale). Jumia and Kilimall are not part of the product.

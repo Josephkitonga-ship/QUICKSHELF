@@ -16,8 +16,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
         {p.stock > 0 && p.stock <= 3 && <p className="low">Only {p.stock} left</p>}
         <p>{p.description}</p>
         <p className="mu">Delivery fee is set by area at checkout.</p>
-        <AddToCart slug={p.slug} stock={p.stock} />
-        <a className="btn out" href={ask} target="_blank" rel="noopener noreferrer">Ask the shop on WhatsApp</a>
+        <AddToCart slug={p.slug} stock={p.stock} name={p.name} price={p.price} vendor={p.shopName} whatsapp={p.shopWhatsapp} />
+        <a className="btn out" href={ask} target="_blank" rel="noopener noreferrer">Ask the vendor on WhatsApp</a>
         <p>Sold by <Link href={`/shop/${p.shop}`}>{p.shopName}</Link> · {p.town}</p>
       </div>
     </div>

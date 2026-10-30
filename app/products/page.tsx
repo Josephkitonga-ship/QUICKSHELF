@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 type SP = { q?: string; category?: string; sort?: string; deals?: string }
 export default async function Products({ searchParams }: { searchParams: SP }) {
   const list = await listProducts({ q: searchParams.q, category: searchParams.category, sort: searchParams.sort, deals: Boolean(searchParams.deals) })
-  const pills = [{ label: 'All products', href: '/products' }, { label: 'Deals', href: '/products?deals=1' }, ...categories.map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` }))]
+  const pills = [{ label: 'All products', href: '/products' }, { label: 'Hot Deals', href: '/products?deals=1' }, ...categories.map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` }))]
   const active = searchParams.category ? `/products?category=${encodeURIComponent(searchParams.category)}` : searchParams.deals ? '/products?deals=1' : '/products'
   return (
     <>

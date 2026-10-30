@@ -27,9 +27,21 @@ export const products: Product[] = [
 ]
 export const ads = [{ id: 'a1', shop: 'kamau-electronics', headline: 'Weekend offer at Kamau Electronics', line: 'Chargers from KSh 450' }]
 export const plans = [
-  { name: 'Starter', price: 1500, products: 25, perks: ['Sell on QuickShelf', 'Your own shop page', 'Orders on WhatsApp'] },
-  { name: 'Growth', price: 3000, products: 50, perks: ['Everything in Starter', 'Sell on Jumia'] },
-  { name: 'Top tier', price: 4500, products: 100, perks: ['Everything in Growth', 'Sell on Kilimall'] },
+  { id: 'starter', name: 'Starter', price: 800, products: 25, perks: ['Sell on QuickShelf', 'Your own vendor page', 'Orders on WhatsApp'] },
+  { id: 'growth', name: 'Growth', price: 1500, products: 50, perks: ['Everything in Starter', 'Buy wholesale to restock'] },
+  { id: 'top', name: 'Top tier', price: 2000, products: 100, perks: ['Everything in Growth', 'Supply wholesale to other vendors'] },
 ]
 export const getShop = (slug: string) => shops.find((s) => s.slug === slug)
 export const getProduct = (slug: string) => products.find((x) => x.slug === slug)
+
+// Sample wholesale listings. Real ones come from the wholesale_terms table and are visible only to approved vendors.
+export type WholesaleItem = { slug: string; name: string; supplier: string; town: string; whatsapp: string; moq: number; breaks: { from: number; price: number }[]; dispatch: string }
+export const wholesale: WholesaleItem[] = [
+  { slug: 'w-maize-flour', name: 'Maize flour 2 kg', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 130 }, { from: 48, price: 122 }], dispatch: '2 days' },
+  { slug: 'w-cooking-oil', name: 'Cooking oil 1 L', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 240 }, { from: 36, price: 232 }], dispatch: '2 days' },
+  { slug: 'w-phone-charger', name: 'Phone charger', supplier: 'Atieno Distributors', town: 'Kisumu', whatsapp: '254700000012', moq: 10, breaks: [{ from: 10, price: 360 }, { from: 50, price: 340 }], dispatch: '3 days' },
+  { slug: 'w-padlock', name: 'Padlock 50 mm', supplier: 'Karanja Supplies', town: 'Thika', whatsapp: '254700000013', moq: 6, breaks: [{ from: 6, price: 310 }, { from: 24, price: 290 }], dispatch: '1 day' },
+]
+
+// Price per unit for a quantity, using the supplier's price breaks.
+export const unitPrice = (x: WholesaleItem, qty: number) => [...x.breaks].sort((p, q) => q.from - p.from).find((br) => qty >= br.from)?.price ?? x.breaks[0].price

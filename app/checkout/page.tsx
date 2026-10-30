@@ -9,7 +9,7 @@ import { kes } from '@/lib/format'
 import { useCatalog } from '@/lib/useCatalog'
 import type { Order } from '@/lib/whatsapp'
 type Pick = { type: 'pickup' | 'delivery'; area: string }
-const MESSAGES: Record<string, string> = { invalid_name: 'Please enter your name.', invalid_phone: 'Please enter a valid Kenyan phone number.', out_of_stock: 'An item just sold out. Please update your cart.', invalid_area: 'Please choose a delivery area.', pickup_unavailable: 'A shop in your cart does not offer pickup.', empty_cart: 'Your cart is empty.' }
+const MESSAGES: Record<string, string> = { invalid_name: 'Please enter your name.', invalid_phone: 'Please enter a valid Kenyan phone number.', out_of_stock: 'An item just sold out. Please update your cart.', invalid_area: 'Please choose a delivery area.', pickup_unavailable: 'A vendor in your cart does not offer pickup.', empty_cart: 'Your cart is empty.' }
 export default function Checkout() {
   const { cart, clear, ready } = useStore(); const router = useRouter(); const data = useCatalog(cart.map((l) => l.slug), ready)
   const [name, setName] = useState(''); const [phone, setPhone] = useState(''); const [err, setErr] = useState(''); const [busy, setBusy] = useState(false)
@@ -50,14 +50,14 @@ export default function Checkout() {
         <fieldset key={g.shop.slug} className="panel"><legend><b>{g.shop.name}</b></legend>
           {g.shop.pickup && <label style={{ flexDirection: 'row', alignItems: 'center', minHeight: 44 }}><input type="radio" name={`t-${g.shop.slug}`} checked={c.type === 'pickup'} onChange={() => setPick({ ...pick, [g.shop.slug]: { ...c, type: 'pickup' } })} /> Pickup, free</label>}
           {can && <label style={{ flexDirection: 'row', alignItems: 'center', minHeight: 44 }}><input type="radio" name={`t-${g.shop.slug}`} checked={c.type === 'delivery'} onChange={() => setPick({ ...pick, [g.shop.slug]: { ...c, type: 'delivery' } })} /> Delivery</label>}
-          {!can && <p className="mu">This shop offers pickup only.</p>}
+          {!can && <p className="mu">This vendor offers pickup only.</p>}
           {can && c.type === 'delivery' && <label>Delivery area<select value={c.area} onChange={(e) => setPick({ ...pick, [g.shop.slug]: { ...c, area: e.target.value } })}>{g.shop.areas.map((a) => <option key={a.name} value={a.name}>{a.name} · {kes(a.fee)}</option>)}</select></label>}
           <p className="row2" style={{ marginTop: 8 }}><span>Subtotal + delivery</span><b>{kes(g.subtotal + feeOf(g.shop.slug, g.shop.areas, g.shop.pickup))}</b></p>
         </fieldset>) })}
       <p className="row2 total"><span>Total</span><span>{kes(total)}</span></p>
       {err && <p role="alert" style={{ color: '#8A1C14' }}>{err}</p>}
-      <button className="btn" type="submit" disabled={busy}>{busy ? 'Placing order…' : `Place order (${groups.length} ${groups.length === 1 ? 'shop' : 'shops'})`}</button>
-      <p className="mu">You agree payment and delivery with each shop on WhatsApp. The final total is confirmed by the shop.</p>
+      <button className="btn" type="submit" disabled={busy}>{busy ? 'Placing order…' : `Place order (${groups.length} ${groups.length === 1 ? 'vendor' : 'vendors'})`}</button>
+      <p className="mu">Payment and delivery are agreed on WhatsApp.</p>
     </form>
   )
 }

@@ -28,7 +28,7 @@ export default function Cart() {
           </ul>
           <p className="row2" style={{ marginTop: 10 }}><b>Subtotal</b><b>{kes(g.subtotal)}</b></p>
         </section>))}
-      <p className="mu" style={{ margin: '8px 0 12px' }}>One checkout. You will chat with each shop separately.</p>
+      <p className="mu" style={{ margin: '8px 0 12px' }}>One checkout. One chat per vendor.</p>
       <Link className="btn block" href="/checkout">Checkout · {kes(groups.reduce((a, g) => a + g.subtotal, 0))}</Link>
     </div>
   )

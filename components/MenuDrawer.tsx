@@ -6,9 +6,9 @@ import { useEffect, useRef, useState } from 'react'
 import { categories } from '@/lib/data'
 type Item = { label: string; href: string }
 const GROUPS: { title: string; items: Item[] }[] = [
-  { title: 'BROWSE', items: [{ label: 'Home', href: '/' }, { label: 'All products', href: '/products' }, { label: 'Deals', href: '/products?deals=1' }, { label: 'Shops', href: '/shops' }, { label: 'Saved items', href: '/saved' }] },
-  { title: 'SHOP', items: categories.map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` })) },
-  { title: 'SELL', items: [{ label: 'Sell on QuickShelf', href: '/sell' }] },
+  { title: 'BROWSE', items: [{ label: 'Home', href: '/' }, { label: 'All products', href: '/products' }, { label: 'Hot Deals', href: '/products?deals=1' }, { label: 'Vendors', href: '/shops' }, { label: 'Saved items', href: '/saved' }] },
+  { title: 'ALL CATEGORIES', items: categories.map((c) => ({ label: c, href: `/products?category=${encodeURIComponent(c)}` })) },
+  { title: 'FOR MERCHANTS & SUPPLIERS', items: [{ label: 'Sell on QuickShelf', href: '/sell' }, { label: 'Wholesale Refill Catalog', href: '/wholesale' }, { label: 'Vendor Onboarding Portal', href: '/apply' }] },
 ]
 const WA = `https://wa.me/${process.env.NEXT_PUBLIC_QUICKSHELF_WHATSAPP ?? ''}?text=${encodeURIComponent('Hello QuickShelf')}`
 export function MenuDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
