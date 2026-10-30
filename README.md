@@ -18,4 +18,4 @@ With them set, it reads from Supabase and places real orders. See `docs/BACKEND.
 
 ## Placeholders
 Sample data and fake WhatsApp numbers, photo boxes, and `/terms` and `/privacy` text.
-Not built: merchant dashboard, owner screens, Jumia and Kilimall sync.
+Not built: vendor login and dashboards (retail and wholesale), owner screens. The `/wholesale` page uses sample data and must be gated to approved vendors before real prices are used. `/terms` and `/privacy` are drafts for legal review.

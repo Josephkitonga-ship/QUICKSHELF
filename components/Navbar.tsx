@@ -26,15 +26,15 @@ export function Navbar() {
         <div className="wrap flex h-14 items-center justify-between">
           <Link href="/" className="logo"><img src="/mark.svg" alt="" width="32" height="32" /><span>QuickShelf</span></Link>
           <div className="flex items-center gap-1">
-            <button className={btn} aria-label="Search products and shops" aria-expanded={search} onClick={() => setSearch((s) => !s)}><Icon d={SEARCH} /></button>
+            <button className={btn} aria-label="Search products and vendors" aria-expanded={search} onClick={() => setSearch((s) => !s)}><Icon d={SEARCH} /></button>
             <Link href="/cart" className={btn} aria-label={n > 0 ? `Cart ${n}` : 'Cart'}><Icon d={CART} />{n > 0 && <span className="absolute right-0.5 top-0.5 min-w-[18px] rounded-full bg-accent px-1 text-center text-[11px] font-semibold leading-[18px] text-white">{n}</span>}</Link>
             <button ref={menuBtn} className={btn} aria-label="Menu" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)}><Icon d={MENU} /></button>
           </div>
         </div>
         {search && (
           <form action="/products" role="search" className="wrap flex gap-2 pb-3" onSubmit={() => setSearch(false)}>
-            <label htmlFor="q" className="sr">Search products and shops</label>
-            <input id="q" name="q" type="search" autoFocus placeholder="Search products and shops" className="flex-1" />
+            <label htmlFor="q" className="sr">Search products and vendors</label>
+            <input id="q" name="q" type="search" autoFocus placeholder="Search products and vendors" className="flex-1" />
             <button className="btn" type="submit">Search</button>
           </form>)}
       </header>

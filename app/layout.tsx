@@ -5,7 +5,7 @@ import { Providers } from '@/components/Providers'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 const font = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], display: 'swap' })
-export const metadata: Metadata = { title: { default: 'QuickShelf | Shop approved businesses across Kenya', template: '%s | QuickShelf' }, description: 'Shop products from approved Kenyan businesses and order on WhatsApp.' }
+export const metadata: Metadata = { title: { default: 'QuickShelf | Shop approved vendors across Kenya', template: '%s | QuickShelf' }, description: 'Shop products from approved Kenyan vendors and order on WhatsApp.' }
 // Applies a saved theme before the page paints, so there is no flash.
 const THEME = "try{var t=localStorage.getItem('qs.theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}"
 export default function RootLayout({ children }: { children: React.ReactNode }) {

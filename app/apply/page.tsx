@@ -12,7 +12,7 @@ export default function Apply() {
     const res = await fetch('/api/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(f) }).catch(() => null)
     if (res?.ok) return setState('done')
     if (res?.status === 501) { // No backend yet: send the application to QuickShelf on WhatsApp instead.
-      const text = `QuickShelf application\nShop: ${f.shop}\nOwner: ${f.name}\nPhone: ${f.phone}\nTown: ${f.town}\nSells: ${f.sells}\nPlan: ${f.plan}`
+      const text = `QuickShelf application\nVendor: ${f.shop}\nOwner: ${f.name}\nPhone: ${f.phone}\nTown: ${f.town}\nSells: ${f.sells}\nPlan: ${f.plan}`
       window.location.href = waLink(process.env.NEXT_PUBLIC_QUICKSHELF_WHATSAPP ?? '', text); return
     }
     setState('error')
@@ -20,9 +20,9 @@ export default function Apply() {
   if (state === 'done') return <><h1>Application received</h1><p style={{ marginTop: 12 }}>Thank you. We review every application and will contact you on {f.phone}.</p></>
   return (
     <form className="form" onSubmit={submit}>
-      <h1>Apply to open your shop</h1>
-      <p className="mu">We review every application before your shop goes live.</p>
-      <label>Shop name<input required value={f.shop} onChange={set('shop')} /></label>
+      <h1>Vendor Onboarding Portal</h1>
+      <p className="mu">We review every application before you go live.</p>
+      <label>Vendor name<input required value={f.shop} onChange={set('shop')} /></label>
       <label>Your name<input required value={f.name} onChange={set('name')} /></label>
       <label>Phone number<input required value={f.phone} onChange={set('phone')} inputMode="tel" /></label>
       <label>Town or area<input required value={f.town} onChange={set('town')} /></label>

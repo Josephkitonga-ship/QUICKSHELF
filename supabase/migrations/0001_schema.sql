@@ -2,9 +2,9 @@
 
 create table plans (
   id text primary key, name text not null, price_kes int not null, product_limit int not null,
-  channels text[] not null default '{}'
+  can_buy_wholesale boolean not null default false, can_supply_wholesale boolean not null default false
 );
-insert into plans values ('starter','Starter',1500,25,'{}'), ('growth','Growth',3000,50,'{jumia}'), ('top','Top tier',4500,100,'{jumia,kilimall}');
+insert into plans values ('starter','Starter',800,25,false,false), ('growth','Growth',1500,50,true,false), ('top','Top tier',2000,100,true,true);
 
 create table profiles (user_id uuid primary key references auth.users on delete cascade, is_admin boolean not null default false);
 
@@ -105,15 +105,6 @@ create table subscription_payments (
   mpesa_code text unique not null,
   status text not null default 'pending' check (status in ('pending','confirmed','rejected')),
   created_at timestamptz not null default now()
-);
-
--- Phase 2 (Jumia, Kilimall): maps a product to its listing on a channel.
-create table channel_listings (
-  id uuid primary key default gen_random_uuid(),
-  product_id uuid not null references products on delete cascade,
-  channel text not null check (channel in ('jumia','kilimall')),
-  external_id text, sync_status text not null default 'pending',
-  last_synced_at timestamptz, unique (product_id, channel)
 );
 
 -- Product cap per plan, enforced here and not only in the UI. A shop 7 days past its plan end cannot add products.

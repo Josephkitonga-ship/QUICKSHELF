@@ -45,7 +45,3 @@ alter table subscription_payments enable row level security;
 create policy subs_read on subscription_payments for select using (owns_shop(shop_id) or is_admin());
 create policy subs_insert on subscription_payments for insert with check (owns_shop(shop_id) and status = 'pending');
 revoke update, delete on subscription_payments from anon, authenticated;
-
-alter table channel_listings enable row level security;
-create policy listings_read on channel_listings for select using (exists (select 1 from products p where p.id = product_id and owns_shop(p.shop_id)));
-revoke insert, update, delete on channel_listings from anon, authenticated;
