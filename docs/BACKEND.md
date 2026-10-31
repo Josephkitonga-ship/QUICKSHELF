@@ -57,3 +57,7 @@ Sign up a user in Supabase Auth, then run (with that user's id):
 - The SQL has not been run against a database yet. Run it on a new Supabase project first and fix any errors.
 
 Tiers: Starter KSh 800 (25 products), Growth KSh 1,500 (50, can buy wholesale), Top tier KSh 2,000 (100, can also supply wholesale). Jumia and Kilimall are not part of the product.
+
+## Applications (v3)
+Run `supabase/migrations/0005_applications_v3.sql` after 0004. It adds the retail and wholesale kinds, county and sub-county, and the extra details wholesale merchants must give. The apply form posts to `POST /api/apply`; without Supabase it sends the application to QuickShelf on WhatsApp.
+The sub-county list in `lib/kenya.ts` comes from the IEBC constituencies. Nine counties were filled in from general knowledge, so check them against the IEBC list before launch.
