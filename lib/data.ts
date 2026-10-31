@@ -35,12 +35,12 @@ export const getShop = (slug: string) => shops.find((s) => s.slug === slug)
 export const getProduct = (slug: string) => products.find((x) => x.slug === slug)
 
 // Sample wholesale listings. Real ones come from the wholesale_terms table and are visible only to approved vendors.
-export type WholesaleItem = { slug: string; name: string; supplier: string; town: string; whatsapp: string; moq: number; breaks: { from: number; price: number }[]; dispatch: string }
+export type WholesaleItem = { slug: string; name: string; supplier: string; town: string; whatsapp: string; moq: number; breaks: { from: number; price: number }[]; dispatch: string; specs: string; verified: boolean }
 export const wholesale: WholesaleItem[] = [
-  { slug: 'w-maize-flour', name: 'Maize flour 2 kg', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 130 }, { from: 48, price: 122 }], dispatch: '2 days' },
-  { slug: 'w-cooking-oil', name: 'Cooking oil 1 L', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 240 }, { from: 36, price: 232 }], dispatch: '2 days' },
-  { slug: 'w-phone-charger', name: 'Phone charger', supplier: 'Atieno Distributors', town: 'Kisumu', whatsapp: '254700000012', moq: 10, breaks: [{ from: 10, price: 360 }, { from: 50, price: 340 }], dispatch: '3 days' },
-  { slug: 'w-padlock', name: 'Padlock 50 mm', supplier: 'Karanja Supplies', town: 'Thika', whatsapp: '254700000013', moq: 6, breaks: [{ from: 6, price: 310 }, { from: 24, price: 290 }], dispatch: '1 day' },
+  { slug: 'w-maize-flour', name: 'Maize flour 2 kg', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 130 }, { from: 48, price: 122 }], dispatch: '2 days', specs: 'Maize meal, 2 kg pack', verified: true },
+  { slug: 'w-cooking-oil', name: 'Cooking oil 1 L', supplier: 'Mwangi Wholesalers', town: 'Nairobi', whatsapp: '254700000011', moq: 12, breaks: [{ from: 12, price: 240 }, { from: 36, price: 232 }], dispatch: '2 days', specs: 'Edible oil, 1 L bottle', verified: true },
+  { slug: 'w-phone-charger', name: 'Phone charger', supplier: 'Atieno Distributors', town: 'Kisumu', whatsapp: '254700000012', moq: 10, breaks: [{ from: 10, price: 360 }, { from: 50, price: 340 }], dispatch: '3 days', specs: 'Fast USB charger', verified: true },
+  { slug: 'w-padlock', name: 'Padlock 50 mm', supplier: 'Karanja Supplies', town: 'Thika', whatsapp: '254700000013', moq: 6, breaks: [{ from: 6, price: 310 }, { from: 24, price: 290 }], dispatch: '1 day', specs: 'Steel padlock, 50 mm', verified: false },
 ]
 
 // Price per unit for a quantity, using the supplier's price breaks.

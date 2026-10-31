@@ -18,3 +18,13 @@ export const quickOrderMessage = (vendor: string, item: string, qty: number, tot
 // A vendor restocking from a supplier.
 export const refillMessage = (supplier: string, buyerShop: string, item: string, qty: number, unit: number) =>
   `Hello ${supplier}, ${buyerShop} wants to place a B2B REFILL ORDER via QuickShelf:\n• Item: ${item}\n• Quantity: ${qty} pcs (Bulk Refill)\n• Tier Price: ${kes(unit)} / unit\n• Total: ${kes(unit * qty)}\nPlease confirm stock availability and dispatch time.`
+
+// A batch of wholesale items for one supplier, in the format used for trade chats.
+export const batchMessage = (supplier: string, lines: { name: string; qty: number; price: number }[], total: number, shop: string, loc: string) => {
+  const rule = '--------------------------------'
+  const shown = lines.slice(0, 8).map((l) => `• ${l.name} - ${l.qty} Units @ ${kes(l.price)}`)
+  const more = lines.length > 8 ? [`and ${lines.length - 8} more items`] : []
+  return ['*QUICKSHELF WHOLESALE BATCH ORDER*', `Supplier: ${supplier}`, rule, ...shown, ...more, rule, `*Total Estimated Cost:* ${kes(total)}`, `*Buyer Shop:* ${shop} (${loc})`].join('\n')
+}
+// A visitor asking QuickShelf for a bulk quote. It goes to QuickShelf first, so supplier numbers stay private.
+export const quoteMessage = (item: string, moq: number) => `Hello QuickShelf, I would like a bulk quote for ${item} (MOQ: ${moq} Units). Please connect me with the supplier.`
