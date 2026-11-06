@@ -1,5 +1,6 @@
 -- Two application routes (retail vendor, wholesale merchant) with a Kenyan county and sub-county.
 alter table applications
+  add column email text check (email is null or email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
   add column kind text not null default 'retail' check (kind in ('retail', 'wholesale')),
   add column county text check (county is null or length(county) between 3 and 40),
   add column sub_county text check (sub_county is null or length(sub_county) between 2 and 60),

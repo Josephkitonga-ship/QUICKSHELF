@@ -8,7 +8,7 @@ type State = 'idle' | 'busy' | 'done' | 'error' | 'invalid'
 // One form for both routes. Retail Vendor and Wholesale Merchant ask for different details.
 export function ApplyForm({ kind }: { kind: 'retail' | 'wholesale' }) {
   const wh = kind === 'wholesale'
-  const [f, setF] = useState({ shop: '', name: '', phone: '', capacity: '', corridors: '', moq: '', registration: '', plan: 'Starter' })
+  const [f, setF] = useState({ shop: '', name: '', phone: '', email: '', capacity: '', corridors: '', moq: '', registration: '', plan: 'Starter' })
   const [loc, setLoc] = useState<Loc>({ county: '', area: '', custom: '' }); const [cats, setCats] = useState<string[]>([]); const [state, setState] = useState<State>('idle')
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value })
   const toggle = (c: string) => setCats((x) => (x.includes(c) ? x.filter((y) => y !== c) : [...x, c]))
@@ -20,7 +20,7 @@ export function ApplyForm({ kind }: { kind: 'retail' | 'wholesale' }) {
     const res = await fetch('/api/apply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null)
     if (res?.ok) return setState('done')
     if (res?.status === 501) { // No backend yet: send the application to QuickShelf on WhatsApp instead.
-      const lines = [`QuickShelf application (${wh ? 'Wholesale Merchant' : 'Retail Vendor'})`, `Name: ${f.shop}`, `Owner: ${f.name}`, `Phone: ${f.phone}`, `Location: ${locText(loc)}, ${loc.county}`, `Categories: ${cats.join(', ')}`, `Plan: ${body.plan}`, ...(wh ? [`Capacity: ${f.capacity}`, `Corridors: ${f.corridors}`, `MOQ rules: ${f.moq}`, `Registration or ID: ${f.registration}`] : [])]
+      const lines = [`QuickShelf application (${wh ? 'Wholesale Merchant' : 'Retail Vendor'})`, `Name: ${f.shop}`, `Owner: ${f.name}`, `Phone: ${f.phone}`, `Email: ${f.email}`, `Location: ${locText(loc)}, ${loc.county}`, `Categories: ${cats.join(', ')}`, `Plan: ${body.plan}`, ...(wh ? [`Capacity: ${f.capacity}`, `Corridors: ${f.corridors}`, `MOQ rules: ${f.moq}`, `Registration or ID: ${f.registration}`] : [])]
       window.location.href = waLink(process.env.NEXT_PUBLIC_QUICKSHELF_WHATSAPP ?? '', lines.join('\n')); return
     }
     setState('error')
@@ -33,6 +33,7 @@ export function ApplyForm({ kind }: { kind: 'retail' | 'wholesale' }) {
       <label>{wh ? 'Business name' : 'Shop name'}<input required value={f.shop} onChange={set('shop')} /></label>
       <label>Your name<input required value={f.name} onChange={set('name')} /></label>
       <label>Phone / WhatsApp<input required value={f.phone} onChange={set('phone')} inputMode="tel" placeholder="07XX XXX XXX" /></label>
+      <label>Email (you will use it to log in)<input required type="email" value={f.email} onChange={set('email')} autoComplete="email" /></label>
       <LocationPicker value={loc} onChange={setLoc} />
       <fieldset className="panel"><legend><b>{wh ? 'What you supply' : 'Catalog categories'}</b></legend>
         <div className="filters" style={{ marginBottom: 0 }}>{categories.map((c) => <button type="button" key={c} className="chip" aria-pressed={cats.includes(c)} onClick={() => toggle(c)} style={cats.includes(c) ? { background: 'var(--tint2)' } : undefined}>{c}</button>)}</div>

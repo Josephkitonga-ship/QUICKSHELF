@@ -13,7 +13,7 @@ export default function Sell() {
       <h1>Sell on QuickShelf</h1>
       <p style={{ margin: '8px 0 16px', maxWidth: 560 }}>Choose how you want to sell.</p>
       <div className="steps">{ROUTES.map((r) => <div className="panel" key={r.href}><h2 style={{ fontSize: 20 }}>{r.title}</h2><p className="mu" style={{ margin: '4px 0 12px' }}>{r.text} {r.note}.</p><Link className="btn" href={r.href}>{r.cta}</Link></div>)}</div>
-      <p className="mu" style={{ margin: '4px 0 16px' }}>Already a vendor? Login is coming soon.</p>
+      <p className="mu" style={{ margin: '4px 0 16px' }}>Already a vendor? <Link href="/login">Log in</Link>.</p>
       <div className="sec"><h2>How it works</h2></div>
       <div className="steps">{[['Apply and get approved', 'We review every vendor before going live.'], ['Add your products', 'Photos, prices and stock in one list.'], ['Order on WhatsApp', 'Buyers chat with you. You mark orders as paid.']].map(([t, d], i) => <div className="panel" key={t}><span className="avatar">{i + 1}</span><h3 style={{ fontSize: 17, margin: '10px 0 4px' }}>{t}</h3><p className="mu">{d}</p></div>)}</div>
       <div className="sec"><h2>Plans</h2></div>

@@ -28,3 +28,6 @@ export const batchMessage = (supplier: string, lines: { name: string; qty: numbe
 }
 // A visitor asking QuickShelf for a bulk quote. It goes to QuickShelf first, so supplier numbers stay private.
 export const quoteMessage = (item: string, moq: number) => `Hello QuickShelf, I would like a bulk quote for ${item} (MOQ: ${moq} Units). Please connect me with the supplier.`
+
+// A Kenyan phone number as typed (07…, +254…, 254…) in the form wa.me expects.
+export const waPhone = (p: string) => { const d = p.replace(/\D/g, ''); return d.startsWith('254') ? d : d.startsWith('0') ? '254' + d.slice(1) : '254' + d }
